@@ -15,7 +15,6 @@ var require = {
     'knockout.mapping': '../bower_components/knockout.mapping/knockout.mapping',
     'scalejs.functional': '../bower_components/scalejs.functional/dist/scalejs.functional.min',
     text: '../bower_components/text/text',
-    ace: '../bower_components/ace/lib/ace',
     crossroads: '../bower_components/crossroads/dist/crossroads',
     signals: '../bower_components/signals/dist/signals',
     hasher: '../bower_components/hasher/dist/js/hasher',
