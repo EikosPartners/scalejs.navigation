@@ -10,7 +10,7 @@ define([
     hasher
 ) {
 
-    'use strict'; 
+   'use strict'; 
 
     var navLinks = ko.observableArray(),
         activeLink = ko.observable(),
@@ -38,7 +38,7 @@ define([
     }
 
     function addNav(navText, routeOrCallback, routeCallback, canNav) {
-        var route, link, callback, defaultRoute,decodeRoute;
+        var route, link, callback, defaultRoute, decodeRoute;
 
         if (typeof routeOrCallback === 'function' ) {
             callback = routeOrCallback;
@@ -54,7 +54,7 @@ define([
 
             decodeRoute = function(arg) {
                 // if we disabled the routing, dont route!
-                if(!active) 
+                if(!active)
                 {
                     return;
                 }
@@ -83,6 +83,10 @@ define([
                     arg = {
                         path: ''
                     }
+                }
+                
+                if(arg.path.indexOf('/') === arg.path.length -1) {
+                    arg.path = arg.path.slice(0, arg.path.length-1);
                 }
 
                 routeCallback(arg);
