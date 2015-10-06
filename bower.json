@@ -16,7 +16,7 @@
     "signals": "~1.0.0",
     "hasher": "~1.2.0",
     "scalejs": "lisovin/scalejs",
-    "scalejs.mvvm": "lisovin/scalejs.mvvm"
+    "scalejs.mvvm": "EikosPartners/scalejs.mvvm"
   },
   "devDependencies": {
     "requirejs": "latest"
