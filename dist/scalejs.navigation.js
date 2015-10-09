@@ -11,7 +11,7 @@ define('scalejs.navigation',[
     hasher
 ) {
 
-   'use strict'; 
+   'use strict';
 
     var navLinks = ko.observableArray(),
         activeLink = ko.observable(),
@@ -22,7 +22,7 @@ define('scalejs.navigation',[
     function parseQuery(qstr) {
         var query = {};
         var a = qstr.substr(1).split('&');
-        for (var i = 0; i < a.length; i++) {
+        for (var i = 0; i < a.length; i = i+1 ) {
             var b = a[i].split('=');
             query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
         }
@@ -30,7 +30,7 @@ define('scalejs.navigation',[
             // TODO: implement better typecasting
             if (query[key] === 'true') {
                 query[key] = true;
-            } 
+            }
             if (query[key] === 'false') {
                 query[key] = false;
             }
@@ -48,7 +48,7 @@ define('scalejs.navigation',[
             // determine the 'default' route for the link
             // incase we want to have sub-navigations...
             defaultRoute = route.split('/')[0];
-            
+
             callback = function () {
                 crossroads.parse(defaultRoute);
             }
@@ -85,7 +85,7 @@ define('scalejs.navigation',[
                         path: ''
                     }
                 }
-                
+
                 if(arg.path.indexOf('/') === arg.path.length -1) {
                     arg.path = arg.path.slice(0, arg.path.length-1);
                 }
@@ -93,9 +93,9 @@ define('scalejs.navigation',[
                 routeCallback(arg);
                 activeLink(link);
             }
-            
+
             crossroads.addRoute(route, decodeRoute);
-            
+
             if (route!==defaultRoute) {
                 crossroads.addRoute(defaultRoute, decodeRoute);
             }
@@ -110,6 +110,7 @@ define('scalejs.navigation',[
             sub: activeLink.subscribe(function(active) {
                 if(active === link) {
                    // callback();
+                   console.log('do something here');
                 }
             }),
             canNav: canNav || function () { return true }
@@ -186,11 +187,11 @@ define('scalejs.navigation',[
     crossroads.routed.add(function (request, data) {
         hasher.setHash(request);
     });
-    
+
     // reset scroll to top on route
-    crossroads.routed.add(function () {
-        window.scrollTo(0, 0)
-    });
+    //crossroads.routed.add(function () {
+    //    window.scrollTo(0, 0)
+    //});
 
     hasher.initialized.add(parseHash);
     hasher.changed.add(parseHash);
