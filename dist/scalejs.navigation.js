@@ -1,4 +1,5 @@
 
+
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -17,7 +18,8 @@ define('scalejs.navigation',[
         activeLink = ko.observable(),
         navLinkMap = {},
         navigation = navigation,
-        active = true;
+        active = true,
+        current;
 
     function parseQuery(qstr) {
         var query = {};
@@ -54,11 +56,6 @@ define('scalejs.navigation',[
             }
 
             decodeRoute = function(arg) {
-                // if we disabled the routing, dont route!
-                if(!active)
-                {
-                    return;
-                }
                 // because crossroads cant handle thing:?foo:/bar:?thing:
                 // workaround - use 'rest' and deconstruct the arg ourselves..
                 if (typeof arg === 'string') {
@@ -67,27 +64,38 @@ define('scalejs.navigation',[
                     if(split.length > 1) {
                         // we have query params!!
                         arg = {
+                            route: defaultRoute,
                             path: split[0],
                             query: parseQuery('?'+split[1])
                         }
                     } else {
                         arg = {
+                            route: defaultRoute,
                             path: split[0] || ''
                         }
                     }
                 } else if (arg) {
                     arg = {
+                        route: defaultRoute,
                         path: '',
                         query: arg
                     }
                 } else {
                     arg = {
+                        route: defaultRoute,
                         path: ''
                     }
                 }
 
                 if(arg.path.indexOf('/') === arg.path.length -1) {
                     arg.path = arg.path.slice(0, arg.path.length-1);
+                }
+                
+                current = arg;
+                
+                // if we disabled the routing, dont route!
+                if(!active) {
+                    return;
                 }
 
                 routeCallback(arg);
@@ -107,12 +115,6 @@ define('scalejs.navigation',[
                 activeLink(link);
                 callback();
             },
-            sub: activeLink.subscribe(function(active) {
-                if(active === link) {
-                   // callback();
-                   console.log('do something here');
-                }
-            }),
             canNav: canNav || function () { return true }
         }
 
@@ -157,6 +159,12 @@ define('scalejs.navigation',[
     }
 
     function setRoute(url, query, shouldCallback) {
+        if (current.route + current.path === url && 
+            JSON.stringify(current.query || {}) === JSON.stringify(query)) {
+                console.warn('Trying to set the same route; will be disregarded');
+                return;
+            }
+        
         if(shouldCallback === false) {
             active=false;
         }
@@ -208,5 +216,6 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
 
