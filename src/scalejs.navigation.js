@@ -34,6 +34,9 @@ define('scalejs.navigation',[
             }
             if (query[key] === 'false') {
                 query[key] = false;
+            }            
+            if (query[key].indexOf(',') !== -1) {
+               query[key] = query[key].split(',');
             }
         })
         return query;
