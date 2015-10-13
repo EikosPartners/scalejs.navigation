@@ -158,7 +158,8 @@ define('scalejs.navigation',[
     }
 
     function setRoute(url, query, shouldCallback) {
-        if (current.route + current.path === url && 
+        var currentUrl = current.route + (current.path ? '/' + current.path : '');
+        if (currentUrl === url && 
             JSON.stringify(current.query || {}) === JSON.stringify(query)) {
                 console.warn('Trying to set the same route; will be disregarded');
                 return;
