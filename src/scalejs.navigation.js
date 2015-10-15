@@ -32,10 +32,10 @@ define('scalejs.navigation',[
             if (query[key] === 'true') {
                 query[key] = true;
             }
-            if (query[key] === 'false') {
+            else if (query[key] === 'false') {
                 query[key] = false;
             }            
-            if (query[key].indexOf(',') !== -1) {
+            else if (typeof query[key] === 'string' && query[key].indexOf(',') !== -1) {
                query[key] = query[key].split(',');
             }
         })
