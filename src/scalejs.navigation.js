@@ -1,4 +1,3 @@
-
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -21,11 +20,18 @@ define('scalejs.navigation',[
         current;
 
     function parseQuery(qstr) {
-        var query = {};
+        var query = {}, parsed;
         var a = qstr.substr(1).split('&');
         for (var i = 0; i < a.length; i = i+1 ) {
             var b = a[i].split('=');
+
             query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+            try {
+                query[decodeURIComponent(b[0])] = JSON.parse(query[decodeURIComponent(b[0])])
+            }
+            catch(ignore) {
+                //if it's already a string, we don't need to do anything
+            }
         }
         Object.keys(query).forEach(function(key) {
             // TODO: implement better typecasting
@@ -34,7 +40,7 @@ define('scalejs.navigation',[
             }
             else if (query[key] === 'false') {
                 query[key] = false;
-            }            
+            }
             else if (typeof query[key] === 'string' && query[key].indexOf(',') !== -1) {
                query[key] = query[key].split(',');
             }
@@ -92,9 +98,9 @@ define('scalejs.navigation',[
                 if(arg.path.indexOf('/') === arg.path.length -1) {
                     arg.path = arg.path.slice(0, arg.path.length-1);
                 }
-                
+
                 current = arg;
-                
+
                 // if we disabled the routing, dont route!
                 if(!active) {
                     return;
@@ -154,7 +160,7 @@ define('scalejs.navigation',[
         var str = [];
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
-              str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+              str.push(encodeURIComponent(p) + '=' + encodeURIComponent(JSON.stringify(obj[p])));
             }
         }
         return str.join('&');
@@ -162,12 +168,12 @@ define('scalejs.navigation',[
 
     function setRoute(url, query, shouldCallback) {
         var currentUrl = current.route + (current.path ? '/' + current.path : '');
-        if (currentUrl === url && 
+        if (currentUrl === url &&
             JSON.stringify(current.query || {}) === JSON.stringify(query)) {
                 console.warn('Trying to set the same route; will be disregarded');
                 return;
             }
-        
+
         if(shouldCallback === false) {
             active=false;
         }
@@ -219,5 +225,3 @@ define('scalejs.navigation',[
 
     return navigation;
 });
-
-
