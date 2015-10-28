@@ -1,4 +1,5 @@
 
+
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -161,13 +162,13 @@ define('scalejs.navigation',[
         var str = [];
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
-              str.push(encodeURIComponent(p) + '=' + encodeURIComponent(JSON.stringify(obj[p])));
+              str.push(encodeURIComponent(p) + '=' + encodeURIComponent(typeof obj[p] === 'string' ? obj[p] : JSON.stringify(obj[p])));
             }
         }
         return str.join('&');
     }
 
-    function setRoute(url, query, shouldCallback) {
+    function setRoute(url, query, shouldCallback, shouldNotReplace) {
         var currentUrl = current.route + (current.path ? '/' + current.path : '');
         if (currentUrl === url &&
             JSON.stringify(current.query || {}) === JSON.stringify(query)) {
@@ -181,7 +182,11 @@ define('scalejs.navigation',[
         if (query) {
             url += '/?' + serialize(query);
         }
-        hasher.setHash(url);
+        if (shouldNotReplace === false) {
+            hasher.replaceHash(url);
+        } else {
+            hasher.setHash(url);
+        }
         active = true;
     }
 
@@ -226,4 +231,5 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
