@@ -189,6 +189,10 @@ define('scalejs.navigation',[
         active = true;
     }
 
+    function getCurrent() {
+        return current;
+    }
+
     navigation = {
         navLinks: navLinks,
         activeLink: activeLink,
@@ -196,7 +200,8 @@ define('scalejs.navigation',[
         addNav: addNav,
         removeNav: removeNav,
         init: init,
-        setRoute: setRoute
+        setRoute: setRoute,
+        getCurrent: getCurrent
     }
 
     core.registerExtension({
