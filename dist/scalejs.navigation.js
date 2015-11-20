@@ -97,7 +97,7 @@ define('scalejs.navigation',[
                     }
                 }
 
-                if(arg.path.indexOf('/') === arg.path.length -1) {
+                if(arg.path[arg.path.length - 1] === '/') {
                     arg.path = arg.path.slice(0, arg.path.length-1);
                 }
 
