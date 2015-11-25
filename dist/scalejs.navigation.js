@@ -135,10 +135,12 @@ define('scalejs.navigation',[
         return link;
     }
 
+
     function removeNav(navText) {
-        navLinkMap[navText].sub.dispose();
-        navLinks.remove(navLinkMap[navText]);
-        delete navLinkMap[navText];
+       if(navLinkMap[navText]){
+           navLinks.remove(navLinkMap[navText]);
+           delete navLinkMap[navText];
+       }
     }
 
     function navigate(navText) {
@@ -236,5 +238,6 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
 
