@@ -1,4 +1,5 @@
 
+
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -252,11 +253,18 @@ define('scalejs.navigation',[
         hasher.setHash(request);
     });
     
-    // if a route is bypassed, save the current url incase it is needed after a reset
+    // if a route is bypassed
+    // either there are nav links and the nav doesnt exist so nav to the first link
+    // or there are no nav links in which case navigation still needs to be set up
+    // so store the url in current
     crossroads.bypassed.add(function (request) {
-        current = {
-            url: request
-        };
+        if(navLinks()[0]) {
+            navLinks()[0].navigate();
+        } else {            
+            current = {
+                url: request
+            };
+        }
     });
 
     hasher.initialized.add(parseHash);
@@ -274,4 +282,5 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
