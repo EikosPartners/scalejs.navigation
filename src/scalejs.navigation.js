@@ -1,4 +1,5 @@
 
+
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -13,7 +14,8 @@ define('scalejs.navigation',[
 
    'use strict';
 
-    var navLinks = ko.observableArray(),
+    var merge = core.object.merge,
+        navLinks = ko.observableArray(),
         activeLink = ko.observable(),
         navLinkMap = {},
         navigation = navigation,
@@ -49,21 +51,24 @@ define('scalejs.navigation',[
         return query;
     }
     
-    function addNav(navText, routeOrCallback, routeCallback, canNav) {
-        var route, link, callback, defaultRoute, decodeRoute, routes = [];
-
-        if (typeof routeOrCallback === 'function' ) {
-            // if no route is defined, call the callback when the navigation occurs
-            callback = routeOrCallback;
+    function addNav(navOptions, callback) {
+        var route, defaultRoute, navCallback, link, decodeRoute,
+            navText = navOptions.text,
+            routes = [];
+        
+        // if not a route, callback is as is
+        if(!navOptions.route) {
+            navCallback = callback;
         } else {
-            route = routeOrCallback;
+            // a route will have extra logic in its callbacl
+            route = navOptions.route;
             // determine the 'default' route for the link
             // incase we want to have sub-navigations...
             defaultRoute = route.split('/')[0];
             
             // callback for the navigation
             // tell crossroads to parse the default route when navigation occurs
-            callback = function () {
+            navCallback = function () {
                 crossroads.parse(defaultRoute);
             }
             
@@ -123,7 +128,7 @@ define('scalejs.navigation',[
                 }
                 
                 // call the callback on the route, and set the active link
-                routeCallback(arg);
+                callback(arg);
                 activeLink(link);
             }
 
@@ -135,15 +140,15 @@ define('scalejs.navigation',[
             }
         }
 
-        link = {
+        link = merge(navOptions, {
             navText: navText,
             navigate: function () {
                 activeLink(link);
-                callback();
+                navCallback();
             },
             routes: routes,
-            canNav: canNav || function () { return true }
-        }
+            canNav: navOptions.canNav || function () { return true }
+        });
 
         navLinks.push(link);
 
@@ -281,4 +286,5 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
