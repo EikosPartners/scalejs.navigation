@@ -1,4 +1,3 @@
-
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -50,7 +49,7 @@ define('scalejs.navigation',[
     }
 
     function addNav(navText, routeOrCallback, routeCallback, canNav) {
-        var route, link, callback, defaultRoute, decodeRoute;
+        var route, link, callback, defaultRoute, decodeRoute, routes = [];
 
         if (typeof routeOrCallback === 'function' ) {
             callback = routeOrCallback;
@@ -111,10 +110,10 @@ define('scalejs.navigation',[
                 activeLink(link);
             }
 
-            crossroads.addRoute(route, decodeRoute);
+            routes.push(crossroads.addRoute(route, decodeRoute));
 
             if (route!==defaultRoute) {
-                crossroads.addRoute(defaultRoute, decodeRoute);
+                routes.push(crossroads.addRoute(defaultRoute, decodeRoute));
             }
         }
 
@@ -124,6 +123,7 @@ define('scalejs.navigation',[
                 activeLink(link);
                 callback();
             },
+            routes: routes,
             canNav: canNav || function () { return true }
         }
 
@@ -138,6 +138,9 @@ define('scalejs.navigation',[
     function removeNav(navText) {
        if(navLinkMap[navText]){
            navLinks.remove(navLinkMap[navText]);
+           navLinkMap[navText].routes.forEach(function(route) {
+               crossroads.removeRoute(route);
+           });
            delete navLinkMap[navText];
        }
     }
@@ -190,6 +193,15 @@ define('scalejs.navigation',[
         }
         active = true;
     }
+    
+    function reRoute() {
+        var url = current.route + (current.path ? '/' + current.path : '');
+        if(current.query) {
+            url += '/?' + serialize(current.query);
+        }
+        crossroads.resetState();
+        crossroads.parse(url);
+    }
 
     function getCurrent() {
         return current;
@@ -203,7 +215,8 @@ define('scalejs.navigation',[
         removeNav: removeNav,
         init: init,
         setRoute: setRoute,
-        getCurrent: getCurrent
+        getCurrent: getCurrent,
+        reRoute: reRoute
     }
 
     core.registerExtension({
@@ -237,5 +250,6 @@ define('scalejs.navigation',[
 
     return navigation;
 });
+
 
 
