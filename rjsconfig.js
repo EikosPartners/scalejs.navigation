@@ -18,7 +18,8 @@ var require = {
     crossroads: '../bower_components/crossroads/dist/crossroads',
     signals: '../bower_components/signals/dist/signals',
     hasher: '../bower_components/hasher/dist/js/hasher',
-    'js-signals': '../bower_components/js-signals/dist/signals'
+    'js-signals': '../bower_components/js-signals/dist/signals',
+    lodash: '../bower_components/lodash/lodash'
   },
   packages: [
 

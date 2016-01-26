@@ -4,12 +4,14 @@ define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
     'crossroads',
-    'hasher'
+    'hasher',
+    'lodash'
 ], function (
     core,
     ko,
     crossroads,
-    hasher
+    hasher,
+    _
 ) {
 
    'use strict';
@@ -230,7 +232,7 @@ define('scalejs.navigation',[
     }
 
     function getCurrent() {
-        return current;
+        return _.deepClone(current);
     }
 
     navigation = {

@@ -7,7 +7,7 @@
             options:
                 baseUrl: 'src'
                 include: '<%=package.name%>'
-                exclude: ['scalejs','text','knockout','scalejs.mvvm','crossroads','signals','hasher']
+                exclude: ['scalejs','text','knockout','scalejs.mvvm','crossroads','signals','hasher','lodash']
                 mainConfigFile: 'rjsconfig.js'
                 out: 'build/<%=package.name%>.js'
                 optimize: 'none'
