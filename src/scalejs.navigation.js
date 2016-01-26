@@ -232,7 +232,7 @@ define('scalejs.navigation',[
     }
 
     function getCurrent() {
-        return _.deepClone(current);
+        return _.cloneDeep(current);
     }
 
     navigation = {
