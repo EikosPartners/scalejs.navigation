@@ -1,5 +1,3 @@
-
-
 define('scalejs.navigation',[
     'scalejs!core',
     'knockout',
@@ -22,7 +20,7 @@ define('scalejs.navigation',[
         navLinkMap = {},
         navigation = navigation,
         active = true,
-        current;
+        current = {};
 
     function parseQuery(qstr) {
         var query = {}, parsed;
@@ -244,7 +242,8 @@ define('scalejs.navigation',[
         init: init,
         setRoute: setRoute,
         getCurrent: getCurrent,
-        reRoute: reRoute
+        reRoute: reRoute,
+        serialize: serialize
     }
 
     core.registerExtension({
@@ -288,5 +287,3 @@ define('scalejs.navigation',[
 
     return navigation;
 });
-
-
