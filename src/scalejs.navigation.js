@@ -20,7 +20,8 @@ define('scalejs.navigation',[
         navLinkMap = {},
         navigation = navigation,
         active = true,
-        current = {};
+        current = {},
+        observableCurrent = ko.observable(current);
 
     function parseQuery(qstr) {
         var query = {}, parsed;
@@ -50,12 +51,12 @@ define('scalejs.navigation',[
         })
         return query;
     }
-    
+
     function addNav(navOptions, callback) {
         var route, defaultRoute, navCallback, link, decodeRoute,
             navText = navOptions.text,
             routes = [];
-        
+
         // if not a route, callback is as is
         if(!navOptions.route) {
             navCallback = callback;
@@ -65,13 +66,13 @@ define('scalejs.navigation',[
             // determine the 'default' route for the link
             // incase we want to have sub-navigations...
             defaultRoute = route.split('/')[0];
-            
+
             // callback for the navigation
             // tell crossroads to parse the default route when navigation occurs
             navCallback = function () {
                 crossroads.parse(defaultRoute);
             }
-            
+
             // creats the def for the current route
             // route - the default route, e.g. the main route
             // path - the sub path for the route, if any
@@ -83,7 +84,7 @@ define('scalejs.navigation',[
                 if (typeof arg === 'string') {
                     // if Arg is a string it is the path plus the serliazed query, so we need to split it
                     var split = arg.split('?');
-                    
+
                     // if the split yields more than 1 result, we have a query param
                     if(split.length > 1) {
                         arg = {
@@ -110,30 +111,31 @@ define('scalejs.navigation',[
                         path: ''
                     }
                 }
-                
+
                 // remove trailing "/" from path if exists
                 if(arg.path[arg.path.length - 1] === '/') {
                     arg.path = arg.path.slice(0, arg.path.length-1);
                 }
-                
+
                 // reconstruct the full url from the arg
                 arg.url = arg.route + (arg.path ? '/' + arg.path : '') + (arg.query ? '/?' + serialize(arg.query) : '');
-                
+
                 // maintain a current reference to the arg
                 current = arg;
+                observableCurrent(current);
 
                 // if we disabled the routing, dont route!
                 if(!active) {
                     return;
                 }
-                
+
                 // call the callback on the route, and set the active link
                 callback(arg);
                 activeLink(link);
             }
 
             routes.push(crossroads.addRoute(route, decodeRoute));
-            
+
             // need to create 2 listeners for more complex routes (e.g. route + path)
             if (route!==defaultRoute) {
                 routes.push(crossroads.addRoute(defaultRoute, decodeRoute));
@@ -198,14 +200,14 @@ define('scalejs.navigation',[
     }
 
     function setRoute(url, query, shouldCallback, shouldNotReplace) {
-        var currentUrl = current.route + (current.path ? '/' + current.path : ''); 
+        var currentUrl = current.route + (current.path ? '/' + current.path : '');
         // figure out if the app is trying to set the same route and disregard it
         if (currentUrl === url &&
             JSON.stringify(current.query || {}) === JSON.stringify(query)) {
                 console.warn('Trying to set the same route; will be disregarded');
                 return;
             }
-        
+
         // disable the callback for the routing
         if(shouldCallback === false) {
             active=false;
@@ -221,7 +223,7 @@ define('scalejs.navigation',[
         }
         active = true;
     }
-    
+
     function reRoute() {
         // resets the state of crossroads and reroutes to the latest url
         var url = current.url;
@@ -230,7 +232,7 @@ define('scalejs.navigation',[
     }
 
     function getCurrent() {
-        return _.cloneDeep(current);
+        return _.cloneDeep(observableCurrent());
     }
 
     navigation = {
@@ -257,7 +259,7 @@ define('scalejs.navigation',[
     crossroads.routed.add(function (request, data) {
         hasher.setHash(request);
     });
-    
+
     // if a route is bypassed
     // either there are nav links and the nav doesnt exist so nav to the first link
     // or there are no nav links in which case navigation still needs to be set up
@@ -265,10 +267,11 @@ define('scalejs.navigation',[
     crossroads.bypassed.add(function (request) {
         if(navLinks()[0]) {
             navLinks()[0].navigate();
-        } else {            
+        } else {
             current = {
                 url: request
             };
+            observableCurrent(current);
         }
     });
 
