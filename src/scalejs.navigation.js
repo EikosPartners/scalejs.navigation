@@ -3,13 +3,15 @@ define('scalejs.navigation',[
     'knockout',
     'crossroads',
     'hasher',
-    'lodash'
+    'lodash',
+    'module'
 ], function (
     core,
     ko,
     crossroads,
     hasher,
-    _
+    _,
+    module
 ) {
 
    'use strict';
@@ -17,9 +19,12 @@ define('scalejs.navigation',[
     var merge = core.object.merge,
         navLinks = ko.observableArray(),
         activeLink = ko.observable(),
+        has = core.object.has,
         navLinkMap = {},
         navigation = navigation,
         active = true,
+        config = module.config() || {},
+        allowSetHash = has(config.allowSetHash) ? config.allowSetHash : true,
         current = {},
         observableCurrent = ko.observable(current);
 
@@ -217,9 +222,9 @@ define('scalejs.navigation',[
         }
         // if shouldNotReplace is false, then it should replace instead of create a new history record
         if (shouldNotReplace === false) {
-            hasher.replaceHash(url);
+            setHash(url, true);
         } else {
-            hasher.setHash(url);
+            setHash(url)
         }
         active = true;
     }
@@ -234,6 +239,14 @@ define('scalejs.navigation',[
     function getCurrent() {
         return _.cloneDeep(observableCurrent());
     }
+    
+    function setHash(url, replace) {
+        if (allowSetHash) {
+           (replace ? hasher.replaceHash : hasher.setHash)(url);         
+        } else {
+            parseHash(url);            
+        }
+    }
 
     navigation = {
         navLinks: navLinks,
@@ -245,7 +258,8 @@ define('scalejs.navigation',[
         setRoute: setRoute,
         getCurrent: getCurrent,
         reRoute: reRoute,
-        serialize: serialize
+        serialize: serialize,
+        allowSetHash: allowSetHash
     }
 
     core.registerExtension({
@@ -257,7 +271,7 @@ define('scalejs.navigation',[
 
     // when a route is detected, set the hash
     crossroads.routed.add(function (request, data) {
-        hasher.setHash(request);
+        setHash(request);
     });
 
     // if a route is bypassed
