@@ -1,6 +1,6 @@
 {
   "name": "scalejs.navigation",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "homepage": "",
   "authors": [],
   "description": "",
@@ -12,7 +12,7 @@
     "!dist/*.js"
   ],
   "dependencies": {
-    "crossroads": "~0.12.2",
+    "crossroads": "EikosPartners/crossroads.js",
     "signals": "~1.0.0",
     "hasher": "~1.2.0",
     "scalejs": "lisovin/scalejs",
