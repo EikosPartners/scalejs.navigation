@@ -1,6 +1,5 @@
-
 define('scalejs.navigation',[
-    'scalejs!core',
+    'scalejs.core',
     'knockout',
     'crossroads',
     'hasher',
