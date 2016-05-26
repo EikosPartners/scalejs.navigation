@@ -21,5 +21,6 @@
     "time-grunt": "~1.0.0",
     "grunt-newer": "~0.7.0",
     "rjs-build-analysis": "0.0.3"
-  }
+  },
+  "main" : "dist/scalejs.navigation"
 }
