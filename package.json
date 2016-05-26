@@ -22,5 +22,9 @@
     "grunt-newer": "~0.7.0",
     "rjs-build-analysis": "0.0.3"
   },
+  "dependencies": {
+    "crossroads" : "latest",
+    "hasher": "~1.2.0"
+  },
   "main" : "dist/scalejs.navigation"
 }
