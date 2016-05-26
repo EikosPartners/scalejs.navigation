@@ -23,7 +23,7 @@ define('scalejs.navigation',[
         navLinkMap = {},
         navigation = navigation,
         active = true,
-        config = module.config() || {},
+        config = core.type.is(module.config, 'function') ? module.config() || {} : {},
         allowSetHash = has(config.allowSetHash) ? config.allowSetHash : true,
         current = {},
         observableCurrent = ko.observable(current);
