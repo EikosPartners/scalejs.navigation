@@ -24,6 +24,10 @@
   },
   "dependencies": {
     "crossroads" : "latest",
+    "hasher": "~1.2.0",
+    "scalejs": "latest",
+    "scalejs.mvvm": "latest",
+    "lodash": "~4.0.0",
     "hasher": "~1.2.0"
   },
   "main" : "dist/scalejs.navigation"
