@@ -1,6 +1,6 @@
 {
   "name": "scalejs.navigation",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "bower": "^1.3.9",
     "coffeelint": "^1.6.0",
@@ -27,7 +27,7 @@
     "hasher": "~1.2.0",
     "scalejs": ">=0.4.1",
     "scalejs.mvvm": ">=1.0.1",
-    "lodash": "~4.0.0"
+    "lodash": "^4.12.0"
   },
   "main" : "dist/scalejs.navigation"
 }
