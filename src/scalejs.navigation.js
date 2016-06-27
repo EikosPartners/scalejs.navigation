@@ -1,20 +1,8 @@
-define('scalejs.navigation',[
-    'scalejs.core',
-    'knockout',
-    'crossroads',
-    'hasher',
-    'lodash',
-    'module'
-], function (
-    core,
-    ko,
-    crossroads,
-    hasher,
-    _,
-    module
-) {
-
-   'use strict';
+import core from 'scalejs.core';
+import ko from 'knockout';
+import crossroads from 'crossroads';
+import hasher from 'hasher';
+import _ from 'lodash';
 
     var merge = core.object.merge,
         navLinks = ko.observableArray(),
@@ -239,12 +227,12 @@ define('scalejs.navigation',[
     function getCurrent() {
         return _.cloneDeep(observableCurrent());
     }
-    
+
     function setHash(url, replace) {
         if (allowSetHash) {
-           (replace ? hasher.replaceHash : hasher.setHash)(url);         
+           (replace ? hasher.replaceHash : hasher.setHash)(url);
         } else {
-            parseHash(url);            
+            parseHash(url);
         }
     }
 
@@ -262,11 +250,11 @@ define('scalejs.navigation',[
         allowSetHash: allowSetHash
     }
 
+    var layout = { content: ko.observable() };
+
     core.registerExtension({
         navigation: navigation,
-        layout: {
-            content: ko.observable()
-        }
+        layout: layout
     });
 
     // when a route is detected, set the hash
@@ -302,5 +290,4 @@ define('scalejs.navigation',[
         }
     });
 
-    return navigation;
-});
+    export {navigation, layout};
