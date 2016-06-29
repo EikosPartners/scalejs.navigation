@@ -200,9 +200,12 @@ function navigate(navText) {
 }
 
 function init() {
+    var initial = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+
+    _hasher2.default.init();
     // will set the initial active link if not defined to be the first one
     if (navLinks().length !== 0 && !activeLink()) {
-        navLinks()[0].navigate();
+        navLinks()[initial].navigate();
     }
 }
 
@@ -307,15 +310,15 @@ _crossroads2.default.bypassed.add(function (request) {
 _hasher2.default.initialized.add(parseHash);
 _hasher2.default.changed.add(parseHash);
 
-_scalejs2.default.onApplicationEvent(function (event) {
-    if (event === 'started') {
-        // wait for all modules to register before initialization
-        setTimeout(function () {
-            _hasher2.default.init();
-            navigation.init();
-        });
-    }
-});
+// core.onApplicationEvent(function (event) {
+//     if (event === 'started') {
+//         // wait for all modules to register before initialization
+//         setTimeout(function () {
+//             hasher.init();
+//             navigation.init();
+//         });
+//     }
+// });
 
 exports.navigation = navigation;
 exports.layout = layout;

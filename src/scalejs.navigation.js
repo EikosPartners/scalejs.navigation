@@ -171,10 +171,11 @@ import _ from 'lodash';
         }
     }
 
-    function init() {
+    function init(initial = 0) {
+        hasher.init();
         // will set the initial active link if not defined to be the first one
         if(navLinks().length !== 0 && !activeLink()) {
-            navLinks()[0].navigate();
+            navLinks()[initial].navigate();
         }
     }
 
@@ -280,15 +281,15 @@ import _ from 'lodash';
     hasher.initialized.add(parseHash);
     hasher.changed.add(parseHash);
 
-    core.onApplicationEvent(function (event) {
-        if (event === 'started') {
-            // wait for all modules to register before initialization
-            setTimeout(function () {
-                hasher.init();
-                navigation.init();
-            });
-        }
-    });
+    // core.onApplicationEvent(function (event) {
+    //     if (event === 'started') {
+    //         // wait for all modules to register before initialization
+    //         setTimeout(function () {
+    //             hasher.init();
+    //             navigation.init();
+    //         });
+    //     }
+    // });
 
     export {
         navigation, 
