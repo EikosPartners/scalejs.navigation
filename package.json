@@ -1,10 +1,10 @@
 {
   "name": "scalejs.navigation",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "devDependencies": {},
   "author": "Erica Gucciardo <erica.gucciardo@eikospartners.com>",
   "scripts": {
-    "build" : "babel src --presets babel-preset-es2015 --out-dir dist/"
+    "build" : "babel src --presets babel-preset-es2015 --out-dir dist/ --source-maps"
   },
   "dependencies": {
     "babel-cli": "^6.10.1",

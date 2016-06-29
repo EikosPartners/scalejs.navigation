@@ -290,4 +290,18 @@ import _ from 'lodash';
         }
     });
 
-    export {navigation, layout};
+    export {
+        navigation, 
+        layout,
+        navLinks,
+        activeLink,
+        navigate,
+        addNav,
+        removeNav,
+        init,
+        setRoute,
+        getCurrent,
+        reRoute,
+        serialize,
+        allowSetHash
+    };

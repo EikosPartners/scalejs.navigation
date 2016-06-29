@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.layout = exports.navigation = undefined;
+exports.allowSetHash = exports.serialize = exports.reRoute = exports.getCurrent = exports.setRoute = exports.init = exports.removeNav = exports.addNav = exports.navigate = exports.activeLink = exports.navLinks = exports.layout = exports.navigation = undefined;
 
 var _scalejs = require('scalejs.core');
 
@@ -319,3 +319,15 @@ _scalejs2.default.onApplicationEvent(function (event) {
 
 exports.navigation = navigation;
 exports.layout = layout;
+exports.navLinks = navLinks;
+exports.activeLink = activeLink;
+exports.navigate = navigate;
+exports.addNav = addNav;
+exports.removeNav = removeNav;
+exports.init = init;
+exports.setRoute = setRoute;
+exports.getCurrent = getCurrent;
+exports.reRoute = reRoute;
+exports.serialize = serialize;
+exports.allowSetHash = allowSetHash;
+//# sourceMappingURL=scalejs.navigation.js.map
