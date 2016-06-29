@@ -37,7 +37,8 @@ var merge = _scalejs2.default.object.merge,
     config = _scalejs2.default.type.is(module.config, 'function') ? module.config() || {} : {},
     allowSetHash = has(config.allowSetHash) ? config.allowSetHash : true,
     current = {},
-    observableCurrent = _knockout2.default.observable(current);
+    observableCurrent = _knockout2.default.observable(current),
+    defaultLinkIndex = 0;
 
 function parseQuery(qstr) {
     var query = {},
@@ -202,6 +203,7 @@ function navigate(navText) {
 function init() {
     var initial = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 
+    defaultLinkIndex = initial;
     _hasher2.default.init();
     // will set the initial active link if not defined to be the first one
     if (navLinks().length !== 0 && !activeLink()) {
@@ -293,12 +295,12 @@ _crossroads2.default.routed.add(function (request, data) {
 });
 
 // if a route is bypassed
-// either there are nav links and the nav doesnt exist so nav to the first link
+// either there are nav links and the nav doesnt exist so nav to the first link (or defaultLinkIndex)
 // or there are no nav links in which case navigation still needs to be set up
 // so store the url in current
 _crossroads2.default.bypassed.add(function (request) {
-    if (navLinks()[0]) {
-        navLinks()[0].navigate();
+    if (navLinks()[defaultLinkIndex]) {
+        navLinks()[defaultLinkIndex].navigate();
     } else {
         current = {
             url: request

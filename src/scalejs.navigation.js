@@ -14,7 +14,8 @@ import _ from 'lodash';
         config = core.type.is(module.config, 'function') ? module.config() || {} : {},
         allowSetHash = has(config.allowSetHash) ? config.allowSetHash : true,
         current = {},
-        observableCurrent = ko.observable(current);
+        observableCurrent = ko.observable(current),
+        defaultLinkIndex = 0;
 
     function parseQuery(qstr) {
         var query = {}, parsed;
@@ -172,6 +173,7 @@ import _ from 'lodash';
     }
 
     function init(initial = 0) {
+        defaultLinkIndex = initial;
         hasher.init();
         // will set the initial active link if not defined to be the first one
         if(navLinks().length !== 0 && !activeLink()) {
@@ -264,12 +266,12 @@ import _ from 'lodash';
     });
 
     // if a route is bypassed
-    // either there are nav links and the nav doesnt exist so nav to the first link
+    // either there are nav links and the nav doesnt exist so nav to the first link (or defaultLinkIndex)
     // or there are no nav links in which case navigation still needs to be set up
     // so store the url in current
     crossroads.bypassed.add(function (request) {
-        if(navLinks()[0]) {
-            navLinks()[0].navigate();
+        if(navLinks()[defaultLinkIndex]) {
+            navLinks()[defaultLinkIndex].navigate();
         } else {
             current = {
                 url: request
