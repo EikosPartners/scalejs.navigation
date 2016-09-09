@@ -304,6 +304,7 @@ import _ from 'lodash';
         init,
         setRoute,
         getCurrent,
+        setCurrent,
         reRoute,
         serialize,
         allowSetHash
