@@ -231,6 +231,11 @@ import _ from 'lodash';
         return _.cloneDeep(observableCurrent());
     }
 
+    function setCurrent(obj) {
+        current = obj;
+        observableCurrent(current);
+    }
+
     function setHash(url, replace) {
         if (allowSetHash) {
            (replace ? hasher.replaceHash : hasher.setHash)(url);
@@ -248,6 +253,7 @@ import _ from 'lodash';
         init: init,
         setRoute: setRoute,
         getCurrent: getCurrent,
+        setCurrent: setCurrent,
         reRoute: reRoute,
         serialize: serialize,
         allowSetHash: allowSetHash

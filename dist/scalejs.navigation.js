@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.allowSetHash = exports.serialize = exports.reRoute = exports.getCurrent = exports.setRoute = exports.init = exports.removeNav = exports.addNav = exports.navigate = exports.activeLink = exports.navLinks = exports.layout = exports.navigation = undefined;
+exports.allowSetHash = exports.serialize = exports.reRoute = exports.setCurrent = exports.getCurrent = exports.setRoute = exports.init = exports.removeNav = exports.addNav = exports.navigate = exports.activeLink = exports.navLinks = exports.layout = exports.navigation = undefined;
 
 var _scalejs = require('scalejs.core');
 
@@ -260,6 +260,11 @@ function getCurrent() {
     return _lodash2.default.cloneDeep(observableCurrent());
 }
 
+function setCurrent(obj) {
+    current = obj;
+    observableCurrent(current);
+}
+
 function setHash(url, replace) {
     if (allowSetHash) {
         (replace ? _hasher2.default.replaceHash : _hasher2.default.setHash)(url);
@@ -277,6 +282,7 @@ exports.navigation = navigation = {
     init: init,
     setRoute: setRoute,
     getCurrent: getCurrent,
+    setCurrent: setCurrent,
     reRoute: reRoute,
     serialize: serialize,
     allowSetHash: allowSetHash
@@ -332,6 +338,7 @@ exports.removeNav = removeNav;
 exports.init = init;
 exports.setRoute = setRoute;
 exports.getCurrent = getCurrent;
+exports.setCurrent = setCurrent;
 exports.reRoute = reRoute;
 exports.serialize = serialize;
 exports.allowSetHash = allowSetHash;
