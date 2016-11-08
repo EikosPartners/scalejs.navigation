@@ -177,7 +177,9 @@ import _ from 'lodash';
         hasher.init();
         // will set the initial active link if not defined to be the first one
         if(navLinks().length !== 0 && !activeLink()) {
-            navLinks()[initial].navigate();
+            // navLinks()[initial].navigate(); // previously, we navigated to first link
+            // now, we leverage "reRoute" code which will allow us to use internally set route
+            reRoute();
         }
     }
 
