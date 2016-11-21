@@ -19,30 +19,33 @@ import _ from 'lodash';
 
     function parseQuery(qstr) {
         var query = {}, parsed;
-        var a = qstr.substr(1).split('&');
-        for (var i = 0; i < a.length; i = i+1 ) {
-            var b = a[i].split('=');
+        var a = qstr.split('&');
+        
+        if (qstr) {
+            for (var i = 0; i < a.length; i = i+1 ) {
+                var b = a[i].split('=');
 
-            query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
-            try {
-                query[decodeURIComponent(b[0])] = JSON.parse(query[decodeURIComponent(b[0])])
+                query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+                try {
+                    query[decodeURIComponent(b[0])] = JSON.parse(query[decodeURIComponent(b[0])])
+                }
+                catch(ignore) {
+                    //if it's already a string, we don't need to do anything
+                }
             }
-            catch(ignore) {
-                //if it's already a string, we don't need to do anything
-            }
+            Object.keys(query).forEach(function(key) {
+                // TODO: implement better typecasting
+                if (query[key] === 'true') {
+                    query[key] = true;
+                }
+                else if (query[key] === 'false') {
+                    query[key] = false;
+                }
+                else if (typeof query[key] === 'string' && query[key].indexOf(',') !== -1) {
+                query[key] = query[key].split(',');
+                }
+            });
         }
-        Object.keys(query).forEach(function(key) {
-            // TODO: implement better typecasting
-            if (query[key] === 'true') {
-                query[key] = true;
-            }
-            else if (query[key] === 'false') {
-                query[key] = false;
-            }
-            else if (typeof query[key] === 'string' && query[key].indexOf(',') !== -1) {
-               query[key] = query[key].split(',');
-            }
-        })
         return query;
     }
 
@@ -84,7 +87,7 @@ import _ from 'lodash';
                         arg = {
                             route: defaultRoute,
                             path: split[0],
-                            query: parseQuery('?'+split[1])
+                            query: parseQuery(split[1])
                         }
                     } else {
                         // there is no query param
@@ -282,7 +285,8 @@ import _ from 'lodash';
             navLinks()[defaultLinkIndex].navigate();
         } else {
             current = {
-                url: request
+                url: request,
+                query: parseQuery(request.split('?')[1] || '')
             };
             observableCurrent(current);
         }
